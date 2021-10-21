@@ -1,4 +1,0 @@
-# All availables queries on this graphqls server
-type Query {
-    bankAccount(id: ID): BankAccount
-}
