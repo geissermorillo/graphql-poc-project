@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: graphql-poc
+  main:
+    allow-bean-definition-overriding: true
+
+server:
+  http2:
+    enabled: true
+
+graphql:
+  servlet:
+    max-query-depth: 100
+    exception-handlers-enabled: false
+  playground:
+    headers:
+      Authorization: Bearer TOKEN
+    tabs:
+      - name: Bank account sample query
+        query: classpath:playground/bank_account.graphql
+        variables: classpath:playground/bank_account_variables.json
+voyager:
+  cdn:
+    enabled: true
