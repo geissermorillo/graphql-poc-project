@@ -9,3 +9,16 @@ query GET_BANK_ACCOUNT($id: ID) {
         }
     }
 }
+
+
+# Creates Geisser's Bank account
+mutation CREATE_BANK_ACCOUNT {
+    createBankAccount(
+        input: {
+            firstName: "Geisser"
+        }
+    ) {
+        id
+        currency
+    }
+}
