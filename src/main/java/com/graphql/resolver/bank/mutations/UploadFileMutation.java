@@ -6,8 +6,6 @@ import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.Part;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
