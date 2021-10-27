@@ -1,4 +1,22 @@
 # All availables queries on this graphqls server
 type Query {
     bankAccount(id: ID): BankAccount
+    bankAccounts(first: Int!, after: String): BankAccountConnection @connection(for: "BankAccount")
+#    bankAccounts(first: Int!, after: String): BankAccountConnection
 }
+
+#type BankAccountConnection {
+#    edges: [BankAccountEdges]
+#    pageInfo: PageInfo
+#}
+#
+#type BankAccountEdges {
+#    cursor: String
+#    node: BankAccount
+#}
+#
+#type PageInfo {
+#    hasPreviousPage: Boolean!
+#    hasNextPage: Boolean!
+#}
+

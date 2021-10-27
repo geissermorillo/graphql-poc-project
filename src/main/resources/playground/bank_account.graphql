@@ -1,27 +1,44 @@
 # Gets Geisser's Bank account
-query GET_BANK_ACCOUNT($id: ID) {
-    bankAccount(id: $id) {
-        id
-        client {
-            id
-            firstName
-            lastName
-        }
-    }
-}
+#query GET_BANK_ACCOUNT($id: ID) {
+#    bankAccount(id: $id) {
+#        id
+#        client {
+#            id
+#            firstName
+#            lastName
+#        }
+#    }
+#}
 
+#query GET_BANK_ACCOUNTS {
+#    bankAccounts(first: 5) {
+#        edges {
+#            cursor
+#            node {
+#                id
+#                createdAt
+#            }
+#        }
+#        pageInfo {
+#            hasPreviousPage
+#            hasNextPage
+#            startCursor
+#            endCursor
+#        }
+#    }
+#}
 
 # Creates Geisser's Bank account
-mutation CREATE_BANK_ACCOUNT {
-    createBankAccount(
-        input: {
-            firstName: "Geisser"
-            age: 10
-        }
-    ) {
-        id
-        currency
-        createdAt
-        createdOn
-    }
-}
+#mutation CREATE_BANK_ACCOUNT {
+#    createBankAccount(
+#        input: {
+#            firstName: "Geisser"
+#            age: 10
+#        }
+#    ) {
+#        id
+#        currency
+#        createdAt
+#        createdOn
+#    }
+#}
