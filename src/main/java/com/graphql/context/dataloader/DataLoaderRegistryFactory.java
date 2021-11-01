@@ -1,5 +1,6 @@
 package com.graphql.context.dataloader;
 
+import com.graphql.Util.CorrelationIdPropagationExecutor;
 import com.graphql.service.BalanceService;
 import lombok.RequiredArgsConstructor;
 import org.dataloader.DataLoader;
@@ -20,8 +21,8 @@ public class DataLoaderRegistryFactory {
     private final BalanceService balanceService;
 
     public static final String BALANCE_DATA_LOADER = "BALANCE_DATA_LOADER";
-    private static final Executor balanceThreadPool = Executors
-            .newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    private static final Executor balanceThreadPool = CorrelationIdPropagationExecutor.wrap(Executors
+            .newFixedThreadPool(Runtime.getRuntime().availableProcessors()));
 
     public DataLoaderRegistry create(String userId) {
         var registry = new DataLoaderRegistry();
