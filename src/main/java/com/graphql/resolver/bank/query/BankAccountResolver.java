@@ -1,71 +1,35 @@
 package com.graphql.resolver.bank.query;
 
-import com.graphql.BankAccountRepository;
-import com.graphql.connection.CursorUtil;
-import com.graphql.context.CustomGraphQLContext;
+import com.graphql.context.dataloader.DataLoaderRegistryFactory;
 import com.graphql.domain.bank.BankAccount;
-import com.graphql.domain.bank.Currency;
-import graphql.kickstart.tools.GraphQLQueryResolver;
-import graphql.kickstart.tools.relay.RelayConnectionFactory;
-import graphql.relay.*;
+import graphql.kickstart.tools.GraphQLResolver;
 import graphql.schema.DataFetchingEnvironment;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.Nullable;
+import org.dataloader.DataLoader;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
-public class BankAccountResolver implements GraphQLQueryResolver {
+public class BankAccountResolver implements GraphQLResolver<BankAccount> {
+    public CompletableFuture<BigDecimal> balance(BankAccount bankAccount, DataFetchingEnvironment environment) throws InterruptedException {
+        /*
+         * GraphQL first execute classes thta implments GraphQLQueryResolver and then the ones tha implement
+         * GraphQLResolver for class, So for each node returned in a query it will execute all resolvers adding latency
+         * for each request (this what is called N+1 problem).
+         *
+         * So, the best solution is execute only one batch request with all the Id's, for this it is necessary
+         * use a DataLoader
+         *
+         */
+        log.info("Getting balance for {}", bankAccount.getId());
 
-    private final BankAccountRepository bankAccountRepository;
-    private final CursorUtil cursorUtil;
+        DataLoader<UUID, BigDecimal> dataLoader = environment.getDataLoader(DataLoaderRegistryFactory.BALANCE_DATA_LOADER);
 
-    public BankAccount bankAccount (UUID id, DataFetchingEnvironment environment) {
-
-        CustomGraphQLContext context = environment.getContext();
-
-        log.info("User id: {}", context.getUserId());
-
-        environment.getSelectionSet().getFields().forEach(selectedField -> {
-            log.info("Field: {}", selectedField.getName());
-        });
-
-        log.info("Retrieving bank account id: {}", id);
-        return BankAccount.builder()
-                .id(id)
-                .currency(Currency.USD)
-                .build();
-    }
-
-    public Connection<BankAccount> bankAccounts(int first, @Nullable String cursor) {
-
-        List<Edge<BankAccount>> edges = getBankAccounts(cursor)
-            .stream()
-            .map(bankAccount -> new DefaultEdge<>(bankAccount, cursorUtil.createCursorWithId(bankAccount.getId())))
-            .limit(first)
-            .collect(Collectors.toUnmodifiableList());
-
-        var pageInfo = new DefaultPageInfo(
-                cursorUtil.getFirstCursorFrom(edges),
-                cursorUtil.getLastCursorFrom(edges),
-                cursor != null,
-                edges.size() >= first);
-
-        return new DefaultConnection<>(edges, pageInfo);
-    }
-
-    public List<BankAccount> getBankAccounts(String cursor) {
-        if (!StringUtils.hasLength(cursor)) {
-            return bankAccountRepository.getBankAccounts();
-        }
-
-        return bankAccountRepository.getBankAccountsAfter(cursorUtil.decodeCursorWithId(cursor));
+        //This code allows us to load the dataLoader with all the ids and then execute only one batch request
+        return dataLoader.load(bankAccount.getId());
     }
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -19,5 +20,6 @@ public class BankAccount {
     List<Asset> assets;
     ZonedDateTime createdAt;
     LocalDate createdOn;
+    BigDecimal balance;
 
 }
