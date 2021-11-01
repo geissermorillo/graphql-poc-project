@@ -12,6 +12,7 @@ graphql:
   servlet:
     max-query-depth: 100
     exception-handlers-enabled: false
+    tracing-enabled: true
   playground:
     headers:
       Authorization: Bearer TOKEN
