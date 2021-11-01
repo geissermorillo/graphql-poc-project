@@ -2,6 +2,7 @@ package com.graphql.resolver.bank.query;
 
 import com.graphql.BankAccountRepository;
 import com.graphql.connection.CursorUtil;
+import com.graphql.context.CustomGraphQLContext;
 import com.graphql.domain.bank.BankAccount;
 import com.graphql.domain.bank.Currency;
 import graphql.kickstart.tools.GraphQLQueryResolver;
@@ -27,6 +28,11 @@ public class BankAccountResolver implements GraphQLQueryResolver {
     private final CursorUtil cursorUtil;
 
     public BankAccount bankAccount (UUID id, DataFetchingEnvironment environment) {
+
+        CustomGraphQLContext context = environment.getContext();
+
+        log.info("User id: {}", context.getUserId());
+
         environment.getSelectionSet().getFields().forEach(selectedField -> {
             log.info("Field: {}", selectedField.getName());
         });
