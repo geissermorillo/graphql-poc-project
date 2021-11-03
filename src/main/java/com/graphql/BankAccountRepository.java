@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +21,7 @@ public class BankAccountRepository {
             .id(UUID.fromString("c6aa269a-812b-49d5-b178-a739a1ed74cc"))
             .currency(Currency.USD)
             .createdAt(ZonedDateTime.parse("2019-05-03T12:12:00+00:00"))
+            .createdOn(LocalDate.parse("2020-10-17"))
             .build(),
         BankAccount.builder()
             .id(UUID.fromString("410f5919-e50b-4790-aae3-65d2d4b21c77"))

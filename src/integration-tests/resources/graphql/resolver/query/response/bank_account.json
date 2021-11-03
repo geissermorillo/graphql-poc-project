@@ -1,0 +1,13 @@
+{
+  "data": {
+    "bankAccount": {
+      "id": "c6aa269a-812b-49d5-b178-a739a1ed74cc",
+      "currency": "USD",
+      "createdOn": "2020-10-17",
+      "client": {
+        "firstName": "Geisser",
+        "lastName": "Morillo1"
+      }
+    }
+  }
+}

@@ -15,6 +15,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -41,6 +42,7 @@ public class BankAccountQueryResolver implements GraphQLQueryResolver {
         return BankAccount.builder()
                 .id(id)
                 .currency(Currency.USD)
+                .createdOn(LocalDate.parse("2020-10-17"))
                 .build();
     }
 
